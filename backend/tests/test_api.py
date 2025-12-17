@@ -36,6 +36,31 @@ def setup_database():
     Base.metadata.drop_all(bind=engine)
 
 
+@pytest.fixture
+async def auth_headers(setup_database):
+    """Create a test user and return auth headers"""
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        # Register
+        await ac.post(
+            "/auth/register",
+            json={
+                "email": "test@example.com",
+                "password": "password123",
+                "full_name": "Test User"
+            }
+        )
+        # Login
+        response = await ac.post(
+            "/auth/login",
+            data={
+                "username": "test@example.com",
+                "password": "password123"
+            }
+        )
+        token = response.json()["access_token"]
+        return {"Authorization": f"Bearer {token}"}
+
+
 @pytest.mark.asyncio
 async def test_root_endpoint():
     """Test root endpoint"""
@@ -58,12 +83,13 @@ async def test_health_check():
 
 
 @pytest.mark.asyncio
-async def test_analyze_url(setup_database):
+async def test_analyze_url(auth_headers):
     """Test URL analysis endpoint"""
     async with AsyncClient(app=app, base_url="http://test") as ac:
         response = await ac.post(
             "/api/v1/seo/analyze",
-            json={"url": "https://example.com"}
+            json={"url": "https://example.com"},
+            headers=auth_headers
         )
     
     # Note: This will fail without actual network access
@@ -72,10 +98,13 @@ async def test_analyze_url(setup_database):
 
 
 @pytest.mark.asyncio
-async def test_get_reports(setup_database):
+async def test_get_reports(auth_headers):
     """Test getting reports list"""
     async with AsyncClient(app=app, base_url="http://test") as ac:
-        response = await ac.get("/api/v1/seo/reports")
+        response = await ac.get(
+            "/api/v1/seo/reports",
+            headers=auth_headers
+        )
     
     assert response.status_code == 200
     assert "reports" in response.json()
