@@ -1,4 +1,5 @@
 import pytest
+import pytest_asyncio
 from httpx import AsyncClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -36,7 +37,7 @@ def setup_database():
     Base.metadata.drop_all(bind=engine)
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def auth_headers(setup_database):
     """Create a test user and return auth headers"""
     async with AsyncClient(app=app, base_url="http://test") as ac:
