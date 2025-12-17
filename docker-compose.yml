@@ -21,7 +21,7 @@ services:
         max-file: "3"
 
   backend:
-    image: ${DOCKER_IMAGE_BACKEND:-mdlc-backend}:${BACKEND_IMAGE_TAG:-latest}
+    image: mdlc-backend:${BACKEND_IMAGE_TAG:-latest}
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -42,7 +42,7 @@ services:
         max-file: "3"
 
   frontend:
-    image: ${DOCKER_IMAGE_FRONTEND:-mdlc-frontend}:${FRONTEND_IMAGE_TAG:-latest}
+    image: mdlc-frontend:${FRONTEND_IMAGE_TAG:-latest}
     build:
       context: ./frontend
       dockerfile: Dockerfile
