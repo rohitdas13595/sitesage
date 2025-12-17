@@ -94,6 +94,8 @@ jobs:
     needs: build-and-push
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     steps:
+      - uses: actions/checkout@v3
+
       - name: Copy docker-compose.yml to VPS
         uses: appleboy/scp-action@master
         with:
