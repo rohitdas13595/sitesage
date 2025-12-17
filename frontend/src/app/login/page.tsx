@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { TrendingUp } from "lucide-react";
-import { API_ENDPOINTS } from "@/lib/api";
+import { API_ENDPOINTS, API_URL } from "@/lib/api";
 import Link from "next/link";
 
 export default function LoginPage() {
@@ -34,15 +34,10 @@ export default function LoginPage() {
       formData.append("username", email);
       formData.append("password", password);
 
-      const response = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
-        }/auth/login`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        body: formData,
+      });
 
       if (!response.ok) {
         throw new Error("Invalid credentials");

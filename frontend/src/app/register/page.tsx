@@ -15,6 +15,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { TrendingUp } from "lucide-react";
 import Link from "next/link";
+import { API_URL } from "@/lib/api";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -30,22 +31,17 @@ export default function RegisterPage() {
     setError("");
 
     try {
-      const response = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
-        }/auth/register`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            password,
-            full_name: fullName,
-          }),
-        }
-      );
+      const response = await fetch(`${API_URL}/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          full_name: fullName,
+        }),
+      });
 
       if (!response.ok) {
         const data = await response.json();

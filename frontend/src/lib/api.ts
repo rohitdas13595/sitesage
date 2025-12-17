@@ -1,6 +1,7 @@
 // Base API URL (set `NEXT_PUBLIC_API_URL` to point at your backend)
-export const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+export const API_URL = (
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+).replace(/\/$/, "");
 
 // Centralized endpoints so components don't hardcode paths.
 export const API_ENDPOINTS = {
