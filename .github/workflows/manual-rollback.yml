@@ -1,0 +1,31 @@
+name: Manual Rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: "Commit SHA to roll back to"
+        required: true
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy specific commit to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          script: |
+            cd ~/app
+            echo "Rolling back to commit ${{ github.event.inputs.commit_sha }}"
+
+            # Update the .env file with the new image tags
+            sed -i "s/BACKEND_IMAGE_TAG=.*/BACKEND_IMAGE_TAG=${{ github.event.inputs.commit_sha }}/" .env
+            sed -i "s/FRONTEND_IMAGE_TAG=.*/FRONTEND_IMAGE_TAG=${{ github.event.inputs.commit_sha }}/" .env
+
+            docker compose pull
+            docker compose up -d
+            docker image prune -f
+            echo "Rollback complete"

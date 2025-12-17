@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="SiteSage">
+  <defs>
+    <linearGradient id="g" x1="14" y1="50" x2="50" y2="14" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square background (matches app header badge) -->
+  <rect x="6" y="6" width="52" height="52" rx="14" fill="url(#g)"/>
+  <!-- Up-trend mark (inspired by lucide 'TrendingUp') -->
+  <path
+    d="M18 40 L30 28 L38 36 L50 24"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M42 24 H50 V32"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>
+

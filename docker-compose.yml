@@ -1,0 +1,71 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  backend:
+    image: ${DOCKER_IMAGE_BACKEND:-mdlc-backend}:${BACKEND_IMAGE_TAG:-latest}
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    command: bash -c "until pg_isready -h db -p 5432; do echo waiting for database; sleep 2; done; alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  frontend:
+    image: ${DOCKER_IMAGE_FRONTEND:-mdlc-frontend}:${FRONTEND_IMAGE_TAG:-latest}
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+    container_name: frontend
+    environment:
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
