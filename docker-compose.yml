@@ -21,12 +21,12 @@ services:
         max-file: "3"
 
   backend:
-    image: mdlc-backend:${BACKEND_IMAGE_TAG:-latest}
+    image: ${DOCKER_IMAGE_BACKEND:-mdlc-backend}:${BACKEND_IMAGE_TAG:-latest}
     build:
       context: ./backend
       dockerfile: Dockerfile
     container_name: backend
-    command: bash -c "until pg_isready -h db -p 5432; do echo waiting for database; sleep 2; done; alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000"
+    command: bash -c "until pg_isready -h db -p 5432; do echo waiting for database; sleep 2; done; alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000 --proxy-headers --forwarded-allow-ips='*'"
     env_file:
       - .env
     depends_on:
@@ -42,7 +42,7 @@ services:
         max-file: "3"
 
   frontend:
-    image: mdlc-frontend:${FRONTEND_IMAGE_TAG:-latest}
+    image: ${DOCKER_IMAGE_FRONTEND:-mdlc-frontend}:${FRONTEND_IMAGE_TAG:-latest}
     build:
       context: ./frontend
       dockerfile: Dockerfile

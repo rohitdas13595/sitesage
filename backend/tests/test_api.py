@@ -110,3 +110,22 @@ async def test_get_reports(auth_headers):
     assert response.status_code == 200
     assert "reports" in response.json()
     assert "total" in response.json()
+
+
+@pytest.mark.asyncio
+async def test_cors_preflight():
+    """Test CORS preflight (OPTIONS) request"""
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        response = await ac.options(
+            "/api/v1/seo/analyze",
+            headers={
+                "Origin": "http://localhost:3000",
+                "Access-Control-Request-Method": "POST",
+                "Access-Control-Request-Headers": "Content-Type",
+            }
+        )
+    
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == "*"
+    assert "POST" in response.headers["access-control-allow-methods"]
+    assert "content-type" in response.headers["access-control-allow-headers"].lower()
