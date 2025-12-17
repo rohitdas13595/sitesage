@@ -87,7 +87,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/mdlc-frontend:${{ github.sha }}
           build-args: |
-            NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -117,6 +117,7 @@ jobs:
             echo "${{ secrets.DOT_ENV }}" > .env
             echo "DOCKER_IMAGE_BACKEND=${{ secrets.DOCKER_USERNAME }}/mdlc-backend" >> .env
             echo "DOCKER_IMAGE_FRONTEND=${{ secrets.DOCKER_USERNAME }}/mdlc-frontend" >> .env
+            echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env
             echo "BACKEND_IMAGE_TAG=${{ github.sha }}" >> .env
             echo "FRONTEND_IMAGE_TAG=${{ github.sha }}" >> .env
             docker compose pull
