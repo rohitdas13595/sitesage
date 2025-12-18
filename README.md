@@ -2,9 +2,25 @@
 
 ### Automated SEO & Performance Analyzer
 
+**Author:** Rohit Kumar Das  
+**GitHub:** [https://github.com/rohitdas13595/sitesage](https://github.com/rohitdas13595/sitesage)  
+**Deployed App:** [https://sitesage.rohituno.com/](https://sitesage.rohituno.com/)  
+**API Documentation:** [https://apisitesage.rohituno.com/docs](https://apisitesage.rohituno.com/docs)
+
+---
+
+## 🏗️ Infrastructure & Rationale
+
+- **CI/CD: GitHub Actions**  
+  Chosen for its deep integration with the GitHub ecosystem. It allows for automated testing, Docker image building, and secure deployment to the VPS without needing external third-party tools.
+- **Hosting: Personal VPS**  
+  Selected for full administrative control and performance. Unlike PaaS providers, a VPS allows for custom Docker orchestration, optimized resource allocation, and precise control over the reverse proxy (Nginx) and SSL configurations.
+
+---
+
 SiteSage is a production-grade web platform that analyzes website URLs for SEO quality and performance using AI-powered insights.
 
-[![CI/CD Pipeline](https://github.com/yourusername/sitesage/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/yourusername/sitesage/actions)
+[![CI/CD Pipeline](https://github.com/rohitdas13595/sitesage/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/rohitdas13595/sitesage/actions)
 
 ---
 
