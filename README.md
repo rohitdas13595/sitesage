@@ -21,6 +21,7 @@
 SiteSage is a production-grade web platform that analyzes website URLs for SEO quality and performance using AI-powered insights.
 
 [![CI/CD Pipeline](https://github.com/rohitdas13595/sitesage/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/rohitdas13595/sitesage/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
